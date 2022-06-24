@@ -13,23 +13,8 @@ import (
 //go:embed frontend/*
 var content embed.FS
 
-func Options(c *gin.Context) {
-	if c.Request.Method != "OPTIONS" {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Next()
-	} else {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "authorization, origin, content-type, accept, token")
-		c.Header("Allow", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS")
-		c.Header("Content-Type", "application/json")
-		c.AbortWithStatus(http.StatusOK)
-	}
-}
-
 func main() {
 	r := gin.Default()
-	r.Use(Options)
 	serverRoot, err := fs.Sub(content, "frontend/dist")
 	if err != nil {
 		log.Fatalln(err)
